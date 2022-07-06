@@ -5,18 +5,14 @@ import java.io.Serializable
 /**
  * 密封类不能被实例化
  */
-sealed class UIState<out T> constructor(val value: Any?) {
-    data class Success<out T>(val data: T) : UIState<T>(data)
+sealed class UIState<out T> constructor() {
+    data class Success<out T>(val data: T) : UIState<T>()
 
     // Nothing 是一个 空类型（uninhabited type），也就是说，程序运行时不会出现任何一个 Nothing 类型对象。Nothing 还是其他所有类型的子类型。
     // Kotlin中一切方法都是表达式，也就是都有返回值，那么正常方法返回 Unit ，无法正常返回的方法就返回 Nothing
     // 如果一个方法的返回类型定义为 Nothing ，那么这个方法就是无法正常返回的
-    data class Failure(val error: ApiError) : UIState<Nothing>(error)
-    data class Loading(val data: Any?) : UIState<Nothing>(data)
-
-//    val isSuccess: Boolean get() = value !is ApiError && this is Success
-//
-//    val isFailure: Boolean get() = value is ApiError
+    data class Failure(val error: ApiError) : UIState<Nothing>()
+    data class Loading(val data: Any?) : UIState<Nothing>()
 
     val isSuccess: Boolean get() = this is Success
 

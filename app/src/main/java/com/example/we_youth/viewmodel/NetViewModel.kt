@@ -7,6 +7,7 @@ import com.example.we_youth.data.LocalDataSource
 import com.example.we_youth.utils.UIState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class NetViewModel : ViewModel() {
-    val sharedFlow = MutableSharedFlow<Int>(replay = 1, extraBufferCapacity = 0, onBufferOverflow = BufferOverflow.SUSPEND)
+    private val _sharedFlow = MutableSharedFlow<Int>(replay = 1, extraBufferCapacity = 0, onBufferOverflow = BufferOverflow.SUSPEND)
 
     // UIState是loading时 值不重要
     private val _uiState: MutableStateFlow<UIState<Int>> = MutableStateFlow<UIState<Int>>(UIState.loading())
@@ -26,6 +27,8 @@ class NetViewModel : ViewModel() {
     fun requestData() {
         Result
         viewModelScope.launch(context = Dispatchers.IO) {
+            // 模拟请求数据操作
+            delay(3000)
             val randoms = (0..2).random()
             when (randoms) {
                 0 -> {
@@ -44,7 +47,15 @@ class NetViewModel : ViewModel() {
         }
     }
 
+    fun sendDataToSharedFlow() {
+
+    }
+
     fun getCallbackFlow(): Flow<Int> {
         return LocalDataSource.getCallbackFlow()
+    }
+
+    fun getStateFlow(): Flow<Int> {
+        return LocalDataSource.getStateFlow()
     }
 }

@@ -13,8 +13,15 @@ object LocalDataSource {
     fun getFlow(): Flow<Int> {
         return listOf(1, 2, 3, 4, 5).asFlow()
             .onEach {
-                delay(100)
-            }
+                delay(1000)
+            }.toShared()
+    }
+
+    fun getStateFlow(): Flow<Int> {
+        return listOf(1, 2, 3, 4, 5).asFlow()
+            .onEach {
+                delay(1000)
+            }.toState(100)
     }
 
     // 将基于回调的 API 转换为数据流
@@ -34,8 +41,29 @@ object LocalDataSource {
     }.catch {
         LogUtils.e("-->>捕捉异常$this")
     }.shareIn(
-        ProcessLifecycleOwner.get().lifecycleScope,// flow 协程作用域范围  scope是完成实现该流程的所有计算的地方。
+        ProcessLifecycleOwner.get().lifecycleScope,// 用于共享数据流的 CoroutineScope。此作用域函数的生命周期应长于任何使用方，以使共享数据流在足够长的时间内保持活跃状态。
         SharingStarted.WhileSubscribed(),//使Flow仅在订阅者数量从0变为1时才开始共享（实现），并在订阅者数量从1变为0时停止共享
-        1)//新订阅者将在订阅时立即获得最后发出的值,这里的replay是指发送最近的多少个数据
+        1
+    )//新订阅者将在订阅时立即获得之前最后发出的值,这里的replay是指发送最近的多少个数据
 
 }
+
+// 利用 shareIn 使冷数据流变为热数据流
+fun <T> Flow<T>.toShared() = shareIn(
+    ProcessLifecycleOwner.get().lifecycleScope,// 用于共享数据流的 CoroutineScope。此作用域函数的生命周期应长于任何使用方，以使共享数据流在足够长的时间内保持活跃状态。
+    SharingStarted.WhileSubscribed(),//使Flow仅在订阅者数量从0变为1时才开始共享（实现），并在订阅者数量从1变为0时停止共享
+    1, //新订阅者将在订阅时立即获得之前最后发出的值,这里的replay是指发送最近的多少个数据
+)
+
+/*fun <T> Flow<T>.toState() = stateIn(
+    ProcessLifecycleOwner.get().lifecycleScope,//
+    started = SharingStarted.WhileSubscribed(),//使Flow仅在订阅者数量从0变为1时才开始共享（实现），并在订阅者数量从1变为0时停止共享
+    initialValue = T, // stateFlow需要一个初始值
+)*/
+
+// 上面那种写法报错 为啥？
+fun <T> Flow<T>.toState(initialValue: T) = stateIn(
+    ProcessLifecycleOwner.get().lifecycleScope,//
+    started = SharingStarted.WhileSubscribed(),//使Flow仅在订阅者数量从0变为1时才开始共享（实现），并在订阅者数量从1变为0时停止共享
+    initialValue, // stateFlow需要一个初始值
+)
