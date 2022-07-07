@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.LogUtils
+import com.example.we_youth.utils.toShared
+import com.example.we_youth.utils.toState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -47,23 +49,3 @@ object LocalDataSource {
     )//新订阅者将在订阅时立即获得之前最后发出的值,这里的replay是指发送最近的多少个数据
 
 }
-
-// 利用 shareIn 使冷数据流变为热数据流
-fun <T> Flow<T>.toShared() = shareIn(
-    ProcessLifecycleOwner.get().lifecycleScope,// 用于共享数据流的 CoroutineScope。此作用域函数的生命周期应长于任何使用方，以使共享数据流在足够长的时间内保持活跃状态。
-    SharingStarted.WhileSubscribed(),//使Flow仅在订阅者数量从0变为1时才开始共享（实现），并在订阅者数量从1变为0时停止共享
-    1, //新订阅者将在订阅时立即获得之前最后发出的值,这里的replay是指发送最近的多少个数据
-)
-
-/*fun <T> Flow<T>.toState() = stateIn(
-    ProcessLifecycleOwner.get().lifecycleScope,//
-    started = SharingStarted.WhileSubscribed(),//使Flow仅在订阅者数量从0变为1时才开始共享（实现），并在订阅者数量从1变为0时停止共享
-    initialValue = T, // stateFlow需要一个初始值
-)*/
-
-// 上面那种写法报错 为啥？
-fun <T> Flow<T>.toState(initialValue: T) = stateIn(
-    ProcessLifecycleOwner.get().lifecycleScope,//
-    started = SharingStarted.WhileSubscribed(),//使Flow仅在订阅者数量从0变为1时才开始共享（实现），并在订阅者数量从1变为0时停止共享
-    initialValue, // stateFlow需要一个初始值
-)

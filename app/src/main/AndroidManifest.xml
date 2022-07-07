@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.We_Youth">
         <activity
+            android:name=".JavaActivity"
+            android:exported="false" />
+        <activity
             android:name=".flow.FlowActivity"
             android:exported="false" />
         <activity

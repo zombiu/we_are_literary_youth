@@ -26,10 +26,22 @@
         android:text="SharedFlow用法"/>
 
     <Button
-        android:id="@+id/btn_state_flow"
+        android:id="@+id/btn_state_flow_"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="StateFlow用法"/>
+
+    <Button
+        android:id="@+id/btn_state_flow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="多次订阅StateFlow"/>
+
+    <Button
+        android:id="@+id/btn_once_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="类似导航/吐司的单次事件"/>
 
     <Button
         android:id="@+id/btn_count"
