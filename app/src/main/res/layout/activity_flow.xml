@@ -38,10 +38,16 @@
         android:text="多次订阅StateFlow"/>
 
     <Button
-        android:id="@+id/btn_once_event"
+        android:id="@+id/btn_once_event_emit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="类似导航/吐司的单次事件"/>
+        android:text="类似导航/吐司的单次事件——emit"/>
+
+    <Button
+        android:id="@+id/btn_once_event_try_emit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="类似导航/吐司的单次事件——tryEmit"/>
 
     <Button
         android:id="@+id/btn_count"

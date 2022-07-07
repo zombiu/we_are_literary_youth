@@ -16,6 +16,10 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.CancellationException
 
+//冷指的是 无消费者时 则不会生产数据
+//热指的是 无观察者时 也会生产数据
+// 冷流只有在有订阅者的情况下才会发出事件，而热流即使没有任何订阅者对其订阅，也可以发出新的事件
+
 // by MainScope() 需要依赖kotlinx-coroutines-android
 class FlowActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     //    val mainScope = MainScope()
@@ -108,8 +112,12 @@ class FlowActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             }
         }
 
-        binding.btnOnceEvent.setOnClickListener {
-            netViewModel.sendOnceEvent()
+        binding.btnOnceEventEmit.setOnClickListener {
+            netViewModel.sendOnceEventByEmit()
+        }
+
+        binding.btnOnceEventTryEmit.setOnClickListener {
+            netViewModel.sendOnceEventByTryEmit()
         }
 
 
