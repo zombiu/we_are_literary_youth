@@ -16,6 +16,9 @@
             android:name=".flow.FlowActivity"
             android:exported="false" />
         <activity
+            android:name=".AnimationActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
