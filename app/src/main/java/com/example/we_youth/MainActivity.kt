@@ -11,6 +11,7 @@ import com.example.we_youth.databinding.ActivityMainBinding
 import com.example.we_youth.flow.FlowActivity
 import com.example.we_youth.utils.observe
 import com.example.we_youth.viewmodel.NetViewModel
+import com.example.we_youth.widget.CustomFlipView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -110,6 +111,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         binding.btnFlow.setOnClickListener {
             startActivity(Intent(this, FlowActivity::class.java))
+        }
+
+        binding.btnAnimation.setOnClickListener {
+            startActivity(Intent(this, CustomFlipView::class.java))
         }
     }
 
