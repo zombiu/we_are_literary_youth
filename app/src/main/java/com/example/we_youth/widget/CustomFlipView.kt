@@ -3,8 +3,12 @@ package com.example.we_youth.widget
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.withSave
 import com.blankj.utilcode.util.Utils
 import com.example.we_youth.R
 import com.blankj.utilcode.util.ConvertUtils
@@ -18,26 +22,29 @@ class CustomFlipView : View {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private val bitmapWidth = ConvertUtils.dp2px(100f)
-    private val bitmapPadding = ConvertUtils.dp2px(100f).toFloat()
+    private val bitmapWidth = ConvertUtils.dp2px(200f)
+    private val bitmapPadding = ConvertUtils.dp2px(50f).toFloat()
     private val bitmap = getBitmap(bitmapWidth)
     private val paint = Paint()
     private var camera = Camera()
 
     init {
+//        camera.setLocation(0f, 0f, -5 * resources.displayMetrics.density)
         // 需要对canvas应用这个旋转效果
-        camera.rotateX(60f)
+        camera.rotateX(30f)
     }
 
     override fun onDraw(canvas: Canvas) {
 
+        canvas.withSave {
 
-        canvas.translate(bitmapPadding + bitmapWidth / 2, bitmapPadding + bitmapWidth / 2)
+        }
         var count = canvas.save()
+        canvas.translate(bitmapPadding + bitmapWidth / 2, bitmapPadding + bitmapWidth / 2)
         camera.applyToCanvas(canvas)
-        canvas.restoreToCount(count)
         canvas.translate(-(bitmapPadding + bitmapWidth / 2), -(bitmapPadding + bitmapWidth / 2))
         canvas.drawBitmap(bitmap, bitmapPadding, bitmapPadding, paint)
+        canvas.restoreToCount(count)
     }
 
 
@@ -49,6 +56,17 @@ class CustomFlipView : View {
         options.inJustDecodeBounds = false
         options.inDensity = options.outWidth
         options.inTargetDensity = width
-        return BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ic_dlam, options)
+        // 主要问题点是BitmapFactory.decodeResource()加载 vector资源文件会失败，需要针对性做兼容处理
+        // 不能使用 Resources.getSystem()
+        return BitmapFactory.decodeResource(resources, R.drawable.ic_dlam, options)
+        // 这个可以加载成功
+//        return ContextCompat.getDrawable(context, R.drawable.ic_dlam)!!.toBitmap()
+    }
+
+    fun getImageSource(): ImageDecoder.Source? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return ImageDecoder.createSource(resources, R.drawable.ic_dlam)
+        }
+        return null
     }
 }

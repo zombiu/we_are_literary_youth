@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         }
 
         binding.btnAnimation.setOnClickListener {
-            startActivity(Intent(this, CustomFlipView::class.java))
+            startActivity(Intent(this, AnimationActivity::class.java))
         }
     }
 
