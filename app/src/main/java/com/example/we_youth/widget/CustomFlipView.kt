@@ -49,7 +49,7 @@ class CustomFlipView : View {
         topRectF.set(-bitmapWidth.toFloat(), -bitmapWidth.toFloat(), bitmapWidth.toFloat(), 0f)
 
         rotateAnimation.duration = 2000
-        rotateAnimation.startDelay = 2000
+        rotateAnimation.startDelay = 1500
         rotateAnimation.start()
     }
 

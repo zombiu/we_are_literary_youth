@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+//    id 'kotlin-kapt'
+    // id 'org.jetbrains.kotlin.android' version '1.6.20' 此版本或更新版本才能使用ksp
+    id 'com.google.devtools.ksp' version "$ksp_version"
 }
 
 android {
@@ -35,6 +38,14 @@ android {
     }
 }
 
+//让IDE知道ksp生成的kotlin代码(仅使用ksp时才需要)
+kotlin {
+    sourceSets.debug {
+        //如果通过productFlavors配置了多渠道，则配置 /../ksp/xxxDebug/kotlin
+        kotlin.srcDir("build/generated/ksp/debug/kotlin")
+    }
+}
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -63,4 +74,10 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
 
     implementation 'com.blankj:utilcodex:1.30.6'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation "com.github.liujingxing.rxhttp:rxhttp:$rxhttp_version"
+    // ksp/kapt/annotationProcessor 选其一
+    ksp "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
+//    kapt "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
 }
