@@ -21,7 +21,9 @@ object RetrofitClient {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+//            .addConverterFactory(GsonConverterFactory.create())
+                // 自定义 GsonConverterFactory
+            .addConverterFactory(com.example.we_youth.net.converter.GsonConverterFactory.create())
             .addCallAdapterFactory(UIStateCallAdapterFactory())
             .build()
             .create(apiClass)

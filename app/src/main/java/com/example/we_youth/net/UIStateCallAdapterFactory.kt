@@ -41,7 +41,6 @@ class UIStateCall<T>(private val delegate: Call<T>) : Call<UIState<T>> {
                         UIState.failure(ApiError.emptyData.errorCode, ApiError.emptyData.errorMsg)
                     } else {
                         // 这里将 WanApiResponse的 data取出来 ，要实现需要使用自定义的 GsonConverterFactory
-                        LogUtils.e("-->> ${response.body()!!::class.java}")
                         UIState.success(response.body()!!)
                     }
                     callback.onResponse(this@UIStateCall, Response.success(apiResult))
@@ -57,6 +56,7 @@ class UIStateCall<T>(private val delegate: Call<T>) : Call<UIState<T>> {
                 val failureApiResult = if (t is ApiException) {
                     UIState.failure(t.errorCode, t.errorMessage)
                 } else {
+                    t.printStackTrace()
                     UIState.failure(ApiError.netError.errorCode, ApiError.netError.errorMsg)
                 }
                 callback.onResponse(this@UIStateCall, Response.success(failureApiResult))

@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.data.LocalDataSource
 import com.example.we_youth.databinding.ActivityMainBinding
 import com.example.we_youth.flow.FlowActivity
+import com.example.we_youth.ui.RetrofitActivity
 import com.example.we_youth.utils.observe
 import com.example.we_youth.viewmodel.NetViewModel
 import com.example.we_youth.viewmodel.WanViewModel
@@ -22,7 +23,6 @@ import kotlinx.coroutines.flow.onEach
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     // 需要activity ktx扩展 必须是val
     val netViewModel by viewModels<NetViewModel>()
-    val wanViewModel by viewModels<WanViewModel>()
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,7 +118,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         binding.btnAnimation.setOnClickListener {
             startActivity(Intent(this, AnimationActivity::class.java))
-            wanViewModel.getHomeArticle()
+        }
+
+        binding.btnRetrofit.setOnClickListener {
+            startActivity(Intent(this, RetrofitActivity::class.java))
         }
     }
 
