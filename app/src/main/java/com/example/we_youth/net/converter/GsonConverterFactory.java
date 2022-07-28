@@ -15,6 +15,7 @@
  */
 package com.example.we_youth.net.converter;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.we_youth.net.BaseJson;
 import com.example.we_youth.net.WanApiResponse;
 import com.google.gson.Gson;
@@ -66,6 +67,10 @@ public final class GsonConverterFactory extends Converter.Factory {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(
             Type type, Annotation[] annotations, Retrofit retrofit) {
+        LogUtils.e("-->>" + type);
+        for (int i = 0; i < annotations.length; i++) {
+            LogUtils.e("-->>" + annotations[i]);
+        }
         ParameterizedTypeImpl impl = new ParameterizedTypeImpl(WanApiResponse.class, new Type[]{type});
 //    Type jsonType = new TypeToken<WanApiResponse>() {}.getType();
         TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(impl));

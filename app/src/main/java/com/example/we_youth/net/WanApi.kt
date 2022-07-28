@@ -1,5 +1,6 @@
 package com.example.we_youth.net
 
+import com.example.we_youth.net.converter.OnlyData
 import com.example.we_youth.net.entity.User
 import com.example.we_youth.utils.UIState
 import com.longjunhao.wanjetpack.data.ApiArticle
@@ -28,6 +29,7 @@ interface WanApi {
 //    suspend fun getHomeArticle(
 //        @Path("page") page: Int
 //    ): WanApiResponse<ApiPage<ApiArticle>>
+    @OnlyData()
     @GET("/article/list/{page}/json")
     suspend fun getHomeArticle(
         @Path("page") page: Int
