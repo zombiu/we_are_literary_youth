@@ -24,13 +24,13 @@ interface WanApi {
     /**
      * 获取首页文章列表
      */
-//    @GET("/article/list/{page}/json")
-//    suspend fun getHomeArticle(
-//        @Path("page") page: Int
-//    ): WanApiResponse<ApiPage<ApiArticle>>
     @GET("/article/list/{page}/json")
     suspend fun getHomeArticle(
         @Path("page") page: Int
-    ): UIState<ApiPage<ApiArticle>>
+    ): WanApiResponse<ApiPage<ApiArticle>>
+//    @GET("/article/list/{page}/json")
+//    suspend fun getHomeArticle(
+//        @Path("page") page: Int
+//    ): UIState<ApiPage<ApiArticle>>
 
 }
