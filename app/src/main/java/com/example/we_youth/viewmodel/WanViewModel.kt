@@ -21,10 +21,20 @@ class WanViewModel : ViewModel() {
     val uiState: StateFlow<UIState<ApiPage<ApiArticle>>> = _uiState.asStateFlow()
 
     fun getHomeArticle() {
+        _uiState.value = UIState.loading()
         viewModelScope.launch(context = Dispatchers.Default) {
             var homeArticle = RemoteDataSource.wanApi.getHomeArticle(0)
             LogUtils.e("-->>$homeArticle")
             _uiState.value = homeArticle
+        }
+    }
+
+    fun getHomeArticleFullResult() {
+        _uiState.value = UIState.loading()
+        viewModelScope.launch(context = Dispatchers.Default) {
+            var homeArticle = RemoteDataSource.wanApi.getHomeArticle2(0)
+            LogUtils.e("-->>$homeArticle")
+            _uiState.value = UIState.success(homeArticle.data)
         }
     }
 }

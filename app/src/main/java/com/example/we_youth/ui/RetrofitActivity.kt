@@ -30,8 +30,12 @@ class RetrofitActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         binding.tvResp.setMovementMethod(ScrollingMovementMethod.getInstance())
 
-        binding.btnHttp.setOnClickListener {
+        binding.btnHttpOnlyData.setOnClickListener {
             wanViewModel.getHomeArticle()
+        }
+
+        binding.btnHttpFullResult.setOnClickListener {
+            wanViewModel.getHomeArticleFullResult()
         }
 
 
@@ -48,9 +52,11 @@ class RetrofitActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                         }
                         is UIState.Failure -> {
                             LogUtils.e("-->>请求失败1=$state")
+                            binding.tvResp.text = "加载失败"
                         }
                         is UIState.Loading -> {
                             LogUtils.e("-->>请求中1=$state")
+                            binding.tvResp.text = "加载中"
                         }
                     }
                 }

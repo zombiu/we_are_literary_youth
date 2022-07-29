@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.we_youth.net.converter;
+package com.example.we_youth.net.converter
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import okhttp3.HttpUrl;
-import retrofit2.http.Url;
+import java.lang.annotation.Documented
+import java.lang.annotation.Retention
+import java.lang.annotation.RetentionPolicy
 
 @Documented
-@Target(METHOD)
-@Retention(RUNTIME)
-public @interface OnlyData {
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
+@Retention(RetentionPolicy.RUNTIME)
+annotation class Response(val value: Int = ONLY_DATA)
 
-  int value() default 0;
-}
+
+const val ONLY_DATA = 0
+const val FULL_RESULT = 1
+const val FULL_RESULT_WITH_HEADER = 2

@@ -15,6 +15,9 @@
  */
 package com.example.we_youth.net.converter;
 
+import static com.example.we_youth.net.converter.ResponseKt.FULL_RESULT;
+import static com.example.we_youth.net.converter.ResponseKt.ONLY_DATA;
+
 import com.blankj.utilcode.util.LogUtils;
 import com.example.we_youth.net.BaseJson;
 import com.example.we_youth.net.WanApiResponse;
@@ -68,13 +71,23 @@ public final class GsonConverterFactory extends Converter.Factory {
     public Converter<ResponseBody, ?> responseBodyConverter(
             Type type, Annotation[] annotations, Retrofit retrofit) {
         LogUtils.e("-->>" + type);
+        int respType = ONLY_DATA;
         for (int i = 0; i < annotations.length; i++) {
             LogUtils.e("-->>" + annotations[i]);
+            if (annotations[i] instanceof Response) {
+                respType = ((Response) annotations[i]).value();
+                break;
+            }
         }
-        ParameterizedTypeImpl impl = new ParameterizedTypeImpl(WanApiResponse.class, new Type[]{type});
-//    Type jsonType = new TypeToken<WanApiResponse>() {}.getType();
-        TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(impl));
-        return new GsonResponseBodyConverter<>(gson, adapter);
+        if (respType == ONLY_DATA) {
+            ParameterizedTypeImpl impl = new ParameterizedTypeImpl(WanApiResponse.class, new Type[]{type});
+            TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(impl));
+            return new GsonResponseBodyConverter<>(gson, adapter);
+        } else if (respType == FULL_RESULT) {
+            TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
+            return new GsonResponseBodyToBaseJsonConverter<>(gson, adapter);
+        }
+        return null;
     }
 
     @Override
