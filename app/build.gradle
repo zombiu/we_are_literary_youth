@@ -84,4 +84,21 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    implementation 'com.github.chenxyu:retrofit-adapter-flow:1.2.0'
+
+    println "----版本为 ${isReleaseBuildType()}----"
+}
+
+afterEvaluate {
+    println "-----gradle 配置完成-----"
+}
+
+boolean isReleaseBuildType(){
+    for(String s : gradle.startParameter.taskNames) {
+        if (s.contains("Release") | s.contains("release")) {
+            return true
+        }
+    }
+    return false
 }

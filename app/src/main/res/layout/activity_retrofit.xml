@@ -15,11 +15,20 @@
         app:layout_constraintTop_toTopOf="parent"
         android:scrollbars="vertical"/>
 
+
     <Button
-        android:id="@+id/btn_http"
+        android:id="@+id/btn_http_only_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_resp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="请求http"/>
+        android:text="请求http_只获取data数据"/>
+
+    <Button
+        android:id="@+id/btn_http_full_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_http_only_data"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="请求http_获取code、data、msg"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

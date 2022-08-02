@@ -1,4 +1,4 @@
-package com.longjunhao.wanjetpack.data
+package com.example.we_youth.net.entity
 
 import com.google.gson.annotations.SerializedName
 

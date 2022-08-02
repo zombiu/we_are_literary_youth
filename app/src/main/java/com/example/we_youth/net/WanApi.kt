@@ -1,9 +1,11 @@
 package com.example.we_youth.net
 
+import com.example.we_youth.net.converter.FULL_RESULT
+import com.example.we_youth.net.converter.Response
+import com.example.we_youth.net.entity.ApiArticle
+import com.example.we_youth.net.entity.ApiPage
 import com.example.we_youth.net.entity.User
 import com.example.we_youth.utils.UIState
-import com.longjunhao.wanjetpack.data.ApiArticle
-import com.longjunhao.wanjetpack.data.ApiPage
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -33,4 +35,9 @@ interface WanApi {
 //        @Path("page") page: Int
 //    ): UIState<ApiPage<ApiArticle>>
 
+    @Response(value = FULL_RESULT)
+    @GET("/article/list/{page}/json")
+    suspend fun getHomeArticle2(
+        @Path("page") page: Int
+    ): WanApiResponse<ApiPage<ApiArticle>>
 }

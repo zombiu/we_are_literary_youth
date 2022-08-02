@@ -10,11 +10,17 @@ import java.lang.reflect.Type
 
 class UIStateCallAdapterFactory : CallAdapter.Factory() {
     override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
+        LogUtils.e("-->>getRawType(returnType)=${getRawType(returnType)}")
+        //注意 如果不是suspend，那么返回值就不是Call
         check(getRawType(returnType) == Call::class.java) { "$returnType must be retrofit2.Call." }
         check(returnType is ParameterizedType) { "$returnType must be parameterized. Raw types are not supported" }
 
         val apiResultType = getParameterUpperBound(0, returnType)
-        check(getRawType(apiResultType) == UIState::class.java) { "$apiResultType must be UIState." }
+        // 这里为了支持其他类型的返回值 如果不是UIState 就返回null
+        if (getRawType(apiResultType) != UIState::class.java) {
+            return null
+        }
+//        check(getRawType(apiResultType) == UIState::class.java) { "$apiResultType must be UIState." }
         check(apiResultType is ParameterizedType) { "$apiResultType must be parameterized. Raw types are not supported" }
 
         val dataType = getParameterUpperBound(0, apiResultType)
@@ -45,7 +51,7 @@ class UIStateCall<T>(private val delegate: Call<T>) : Call<UIState<T>> {
                     }
                     callback.onResponse(this@UIStateCall, Response.success(apiResult))
                 } else {
-                    val failureApiResult =  UIState.failure(response.code(), response.message())
+                    val failureApiResult = UIState.failure(response.code(), response.message())
                     callback.onResponse(this@UIStateCall, Response.success(failureApiResult))
                 }
 

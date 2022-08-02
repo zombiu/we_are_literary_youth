@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.data.RemoteDataSource
 import com.example.we_youth.utils.UIState
-import com.longjunhao.wanjetpack.data.ApiArticle
-import com.longjunhao.wanjetpack.data.ApiPage
+import com.example.we_youth.net.entity.ApiArticle
+import com.example.we_youth.net.entity.ApiPage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +21,18 @@ class WanViewModel : ViewModel() {
     val uiState: StateFlow<UIState<ApiPage<ApiArticle>>> = _uiState.asStateFlow()
 
     fun getHomeArticle() {
-        viewModelScope.launch(context = Dispatchers.Main) {
+        _uiState.value = UIState.loading()
+        viewModelScope.launch(context = Dispatchers.Default) {
             var homeArticle = RemoteDataSource.wanApi.getHomeArticle(0)
+            LogUtils.e("-->>$homeArticle")
+            _uiState.value = homeArticle
+        }
+    }
+
+    fun getHomeArticleFullResult() {
+        _uiState.value = UIState.loading()
+        viewModelScope.launch(context = Dispatchers.Default) {
+            var homeArticle = RemoteDataSource.wanApi.getHomeArticle2(0)
             LogUtils.e("-->>$homeArticle")
             _uiState.value = UIState.success(homeArticle.data)
         }
