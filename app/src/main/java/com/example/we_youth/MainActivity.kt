@@ -12,8 +12,7 @@ import com.example.we_youth.flow.FlowActivity
 import com.example.we_youth.ui.RetrofitActivity
 import com.example.we_youth.utils.observe
 import com.example.we_youth.viewmodel.NetViewModel
-import com.example.we_youth.viewmodel.WanViewModel
-import com.example.we_youth.widget.CustomFlipView
+import com.sample.module.Config
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -123,6 +122,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         binding.btnRetrofit.setOnClickListener {
             startActivity(Intent(this, RetrofitActivity::class.java))
         }
+
+        LogUtils.e("-->>打印版本 ${Config.sampleStr}")
     }
 
 

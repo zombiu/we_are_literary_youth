@@ -36,6 +36,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    // 产品的维度 没用到的dimension，会导致编译不通过
+    flavorDimensions "edition" //, "feature", "channel",
+    productFlavors {
+        vip {
+            dimension "edition"
+        }
+        free {
+            dimension "edition"
+        }
+
+    }
 }
 
 //让IDE知道ksp生成的kotlin代码(仅使用ksp时才需要)
@@ -94,8 +106,8 @@ afterEvaluate {
     println "-----gradle 配置完成-----"
 }
 
-boolean isReleaseBuildType(){
-    for(String s : gradle.startParameter.taskNames) {
+boolean isReleaseBuildType() {
+    for (String s : gradle.startParameter.taskNames) {
         if (s.contains("Release") | s.contains("release")) {
             return true
         }
