@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.data.RemoteDataSource
 import com.example.we_youth.utils.UIState
-import com.longjunhao.wanjetpack.data.ApiArticle
-import com.longjunhao.wanjetpack.data.ApiPage
+import com.example.we_youth.net.entity.ApiArticle
+import com.example.we_youth.net.entity.ApiPage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
