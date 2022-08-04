@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.We_Youth">
         <activity
+            android:name=".ui.SampleActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.RetrofitActivity"
             android:exported="false" />
         <activity

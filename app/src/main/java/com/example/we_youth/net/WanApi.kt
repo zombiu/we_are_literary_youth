@@ -29,11 +29,7 @@ interface WanApi {
     @GET("/article/list/{page}/json")
     suspend fun getHomeArticle(
         @Path("page") page: Int
-    ): WanApiResponse<ApiPage<ApiArticle>>
-//    @GET("/article/list/{page}/json")
-//    suspend fun getHomeArticle(
-//        @Path("page") page: Int
-//    ): UIState<ApiPage<ApiArticle>>
+    ): UIState<ApiPage<ApiArticle>>
 
     @Response(value = FULL_RESULT)
     @GET("/article/list/{page}/json")
