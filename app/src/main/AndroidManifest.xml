@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.We_Youth">
         <activity
+            android:name=".ui.KeyboardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
             android:name=".ui.RetrofitActivity"
             android:exported="false" />
         <activity

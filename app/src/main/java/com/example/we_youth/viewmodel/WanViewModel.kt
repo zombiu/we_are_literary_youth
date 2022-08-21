@@ -25,7 +25,7 @@ class WanViewModel : ViewModel() {
         viewModelScope.launch(context = Dispatchers.Default) {
             var homeArticle = RemoteDataSource.wanApi.getHomeArticle(0)
             LogUtils.e("-->>$homeArticle")
-            _uiState.value = homeArticle
+//            _uiState.value = homeArticle
         }
     }
 

@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.data.LocalDataSource
 import com.example.we_youth.databinding.ActivityMainBinding
 import com.example.we_youth.flow.FlowActivity
+import com.example.we_youth.ui.KeyboardActivity
 import com.example.we_youth.ui.RetrofitActivity
 import com.example.we_youth.utils.observe
 import com.example.we_youth.viewmodel.NetViewModel
@@ -122,6 +123,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         binding.btnRetrofit.setOnClickListener {
             startActivity(Intent(this, RetrofitActivity::class.java))
+        }
+
+        binding.btnInput.setOnClickListener {
+            startActivity(Intent(this, KeyboardActivity::class.java))
         }
     }
 
