@@ -60,6 +60,7 @@ class KeyboardActivity : AppCompatActivity() {
 
         binding.lvMessage.onItemLongClickListener = object : AdapterView.OnItemLongClickListener {
             override fun onItemLongClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
+                // TODO 需呀判断软键盘是否弹出
                 messageAdapter.datas.removeAt(position)
                 messageAdapter.notifyDataSetChanged()
                 handle.postDelayed({
@@ -75,6 +76,9 @@ class KeyboardActivity : AppCompatActivity() {
     private var lastTransDiff = 0
 
     private fun transListView(keyboardHeight: Int) {
+        if (binding.lvMessage.count <= 0) {
+            return
+        }
         /*binding.lvMessage.apply {
             var visibleCount = lastVisiblePosition - firstVisiblePosition
             if (messageAdapter.count >= visibleCount) {
@@ -133,6 +137,8 @@ class KeyboardActivity : AppCompatActivity() {
 //                    translationY = diff
 //                    getTransAnimatoion(oldTranslationY, diff).start()
                 translateAnimation.getTransAnimatoion(-diff).start()
+            } else {
+                translateAnimation.getTransAnimatoion(0f).start()
             }
         }
 
