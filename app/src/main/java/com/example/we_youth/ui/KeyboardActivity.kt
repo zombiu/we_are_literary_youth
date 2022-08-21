@@ -63,7 +63,7 @@ class KeyboardActivity : AppCompatActivity() {
                 messageAdapter.datas.removeAt(position)
                 messageAdapter.notifyDataSetChanged()
                 handle.postDelayed({
-
+                    transListView(keyboardStatePopupWindow.keyboardHeight)
                 }, 50)
                 return true
             }
@@ -107,8 +107,8 @@ class KeyboardActivity : AppCompatActivity() {
         }*/
         var lvMessage = binding.lvMessage
 
-        var visibleCount = lvMessage.lastVisiblePosition - lvMessage.firstVisiblePosition
-        if (messageAdapter.count >= visibleCount) {
+        var visibleCount = lvMessage.lastVisiblePosition - lvMessage.firstVisiblePosition + 1
+        if (messageAdapter.count > visibleCount) {
             // todo 后期改成动画
 //                translationY = keyboardHeight.toFloat()
 //                getTransAnimatoion(binding.lvMessage.translationY, keyboardHeight.toFloat())
@@ -200,7 +200,7 @@ class MessageAdapter : BaseAdapter {
 
 fun getDatas(): MutableList<Int> {
     var datas = ArrayList<Int>()
-    for (i in 0 until 20) {
+    for (i in 0 until 12) {
         datas.add(i)
     }
     return datas
