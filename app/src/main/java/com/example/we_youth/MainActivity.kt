@@ -1,16 +1,22 @@
 package com.example.we_youth
 
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.data.LocalDataSource
 import com.example.we_youth.databinding.ActivityMainBinding
 import com.example.we_youth.flow.FlowActivity
 import com.example.we_youth.ui.RetrofitActivity
 import com.example.we_youth.ui.SampleActivity
+import com.example.we_youth.utils.UIKit
+import com.example.we_youth.utils.UIKit.inMagicWindow
 import com.example.we_youth.utils.observe
 import com.example.we_youth.viewmodel.NetViewModel
 import com.example.we_youth.viewmodel.WanViewModel
@@ -128,8 +134,41 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         binding.btnPadCompat.setOnClickListener {
             startActivity(Intent(this, SampleActivity::class.java))
         }
+
+        LogUtils.e("-->>是否支持平行视界=${inMagicWindow(this)}  是否分屏模式=${UIKit.isMuiltWindowMode(this)}")
+
+        if (!UIKit.inMagicWindow(this)) {
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
+        LogUtils.e("-->>是否是平板=${DeviceUtils.isTablet()}")
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        var config = this.getResources().getConfiguration().toString()
+//        var isInMagicWindow = config.contains("hwMultiwindow-magic")
+//        var isInMagicWindow = config.contains("hw-magic-windows")
+
+        /*if (!UIKit.inMagicWindow(this)) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }*/
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LogUtils.e("-->>newConfig = ${newConfig}")
+        if (!UIKit.inMagicWindow(this)) {
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+    }
 
     private fun testFlowEx() {
         launch(context = Dispatchers.Default) {

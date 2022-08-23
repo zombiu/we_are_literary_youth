@@ -1,12 +1,14 @@
 package com.example.we_youth.ui
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
@@ -64,10 +66,21 @@ class SampleActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 }
             }
         }
+
+        LogUtils.e("-->>当前屏幕方向=${isScreenPortrait(this)}")
     }
 
 
+    private fun isScreenPortrait(ctx: Context): Boolean {
+        return ctx.resources.configuration.orientation === Configuration.ORIENTATION_PORTRAIT
+    }
+
+    override fun onContentChanged() {
+        super.onContentChanged()
+
+    }
 }
+
 
 class SampleListAdapter(var context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var layoutInflater: LayoutInflater = LayoutInflater.from(context)
