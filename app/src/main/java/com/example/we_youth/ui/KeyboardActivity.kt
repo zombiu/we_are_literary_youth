@@ -70,6 +70,8 @@ class KeyboardActivity : AppCompatActivity() {
             }
 
         }
+
+
     }
 
     private var lastChildXY = IntArray(2)
