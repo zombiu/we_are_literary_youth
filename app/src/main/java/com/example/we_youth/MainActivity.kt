@@ -114,20 +114,28 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         binding.btnFlow.setOnClickListener {
             startActivity(Intent(this, FlowActivity::class.java))
-
+            App.write("打开了FlowActivity")
+            App.read()
         }
 
         binding.btnAnimation.setOnClickListener {
             startActivity(Intent(this, AnimationActivity::class.java))
+            App.write("打开了AnimationActivity")
+            App.read()
         }
 
         binding.btnRetrofit.setOnClickListener {
             startActivity(Intent(this, RetrofitActivity::class.java))
+            App.write("打开了RetrofitActivity")
+            App.read()
         }
 
         binding.btnInput.setOnClickListener {
             startActivity(Intent(this, KeyboardActivity::class.java))
+            App.write("打开了KeyboardActivity")
+            App.read()
         }
+
     }
 
 

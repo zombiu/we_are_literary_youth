@@ -1,16 +1,71 @@
 package com.example.we_youth
 
 import android.app.Application
+import android.util.Log
+import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.matrix.config.DynamicConfigImplDemo
 import com.example.we_youth.matrix.listener.TestPluginListener
 import com.tencent.matrix.Matrix
 import com.tencent.matrix.trace.TracePlugin
 import com.tencent.matrix.trace.config.TraceConfig
 import com.tencent.matrix.util.MatrixLog
+import glog.android.Glog
 import java.io.File
+import java.io.IOException
+
 
 class App : Application() {
     val TAG = "-->>${this.javaClass.name}"
+
+
+    companion object {
+        var glog: Glog? = null
+
+        fun log(): Glog {
+            return glog!!
+        }
+
+        // 写入日志
+        public fun write(content: String) {
+            val data: ByteArray = serialize(content) // 序列化数据
+            var b = glog!!.write(data) // 写入二进制数组
+            Log.e("-->>", "写入是否成功 $b")
+        }
+
+        private fun serialize(content: String): ByteArray {
+            return content.toByteArray()
+        }
+
+        // 读取日志
+        public fun read() {
+            val logFiles: ArrayList<String> = ArrayList()
+            glog!!.getArchiveSnapshot(logFiles, 10, 100 * 1024) // 获取日志文件快照，当 cache 中日志条数 >=10 或体积 >= 100 KB 将自动 flush
+            val inBuffer = ByteArray(Glog.getSingleLogMaxLength())
+            for (logFile in logFiles) {
+                try {
+                    glog!!.openReader(logFile).use { reader ->
+                        while (true) {
+                            val n = reader.read(inBuffer)
+                            if (n < 0) {
+                                break
+                            } else if (n == 0) { // 触发容错
+                                continue
+                            }
+                            val outBuffer = ByteArray(n)
+                            System.arraycopy(inBuffer, 0, outBuffer, 0, n)
+                            deserialize(outBuffer) // 反序列化数据
+                        }
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        private fun deserialize(outBuffer: ByteArray) {
+            LogUtils.e("-->>GLOG", String(outBuffer))
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -44,6 +99,15 @@ class App : Application() {
         tracePlugin.start();
 //        memoryCanaryPlugin.start();
 //        Matrix.with().startAllPlugins()
+
+        // 全局初始化 设置内部调试日志等级
+        try {
+            Glog.initialize(if (BuildConfig.DEBUG) Glog.InternalLogLevel.InternalLogLevelDebug else Glog.InternalLogLevel.InternalLogLevelInfo)
+            Log.d("glog", "glog initialize success")
+        } catch (t: Throwable) {
+            Log.e("glog", "glog initialize failed", t)
+        }
+        setup()
     }
 
     private fun configureTracePlugin(dynamicConfig: DynamicConfigImplDemo): TracePlugin {
@@ -77,5 +141,15 @@ class App : Application() {
         //Another way to use SignalAnrTracer separately
         //useSignalAnrTraceAlone(anrTraceFile.getAbsolutePath(), printTraceFile.getAbsolutePath());
         return TracePlugin(traceConfig)
+    }
+
+    // 初始化实例
+    private fun setup() {
+        glog = Glog.Builder(applicationContext)
+            .protoName("glog_identify") // 实例标识，相同标识的实例只创建一次
+//            .encryptMode(Glog.EncryptMode.AES) // 加密方式
+//            .key("123") // ECDH Server public key
+            .incrementalArchive(true) // 增量归档，当天日志写入同一文件
+            .build()
     }
 }
