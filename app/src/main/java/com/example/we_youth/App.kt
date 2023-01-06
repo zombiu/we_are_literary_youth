@@ -146,6 +146,7 @@ class App : Application() {
     // 初始化实例
     private fun setup() {
         glog = Glog.Builder(applicationContext)
+            .rootDirectory(externalCacheDir.toString())
             .protoName("glog_identify") // 实例标识，相同标识的实例只创建一次
 //            .encryptMode(Glog.EncryptMode.AES) // 加密方式
 //            .key("123") // ECDH Server public key
