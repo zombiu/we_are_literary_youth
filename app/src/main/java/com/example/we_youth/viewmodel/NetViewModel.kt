@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 /**
- * 遇到的bug：写demo时，遇到很多次flow发送事件无效的情况，可能是编译器有问题还是咋的，多运行几次就好了
+ *
  */
 class NetViewModel : ViewModel() {
     // 1.replay表示当新的订阅者Collect时，发送几个已经发送过的数据给它，默认为0，即默认新订阅者不会获取以前的数据

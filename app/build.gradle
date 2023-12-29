@@ -136,3 +136,14 @@ boolean isReleaseBuildType(){
     }
     return false
 }
+
+// 创建一个task
+tasks.register("skipTask") { taskObj ->
+    taskObj.configure {
+        enabled = true
+    }
+
+    taskObj.doLast {
+        println("${it.name} is Executed")
+    }
+}

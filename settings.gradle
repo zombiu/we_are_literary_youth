@@ -5,6 +5,8 @@ pluginManagement {
         mavenCentral()
     }
 }
+// 开启孵化特性 catalog
+enableFeaturePreview('VERSION_CATALOGS')
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,9 +14,73 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://jitpack.io' }
     }
+    versionCatalogs {
+        libs {
+            version('groovy', '3.0.5')
+            version('compilesdk', '30')
+            version('targetsdk', '30')
+            alias('retrofit').to('com.squareup.retrofit2:retrofit:2.9.0')
+            alias('groovy-core').to('org.codehaus.groovy', 'groovy').versionRef('groovy')
+            alias('groovy-json').to('org.codehaus.groovy', 'groovy-json').versionRef('groovy')
+            alias('groovy-nio').to('org.codehaus.groovy', 'groovy-nio').versionRef('groovy')
+            alias('commons-lang3').to('org.apache.commons', 'commons-lang3').version {
+                strictly '[3.8, 4.0['
+                prefer '3.9'
+            }
+        }
+    }
 }
 rootProject.name = "We_Youth"
 include ':app'
 
 
-println "-----gradle 初始化完成-----"
+println("---Gradle：开始初始化了")
+gradle.settingsEvaluated {
+    println("---Gradle：settingsEvaluated Settings对象评估完毕")
+}
+// projectsLoaded回调时已经根据settings.gradle创建了各个模块的Project对象
+gradle.projectsLoaded {
+    println("---Gradle：projectsLoaded 准备加载Project对象了")
+}
+
+gradle.allprojects{
+    beforeEvaluate {
+        println("---Gradle：Projec beforeEvaluate Project开始评估，对象是 = "+project.name)
+    }
+    afterEvaluate {
+        println("---Gradle：Projec afterEvaluate Project评估完毕，对象是 = "+project.name)
+    }
+}
+// 所有Project对象evaluate完毕
+gradle.projectsEvaluated {
+    println("---Gradle：projectsEvaluated 所有Project对象评估完毕")
+}
+// 构建结束 所有Task执行完毕，也就意味着构建结束，会回调gradle.buildFinished 已废弃
+gradle.buildFinished {
+    println("---Gradle：buildFinished 构建结束了")
+}
+
+gradle.addListener(new BuildListener() {
+    @Override
+    void settingsEvaluated(Settings settings) {
+
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+
+    }
+
+    @Override
+    void buildFinished(BuildResult result) {
+
+    }
+})
+
+
+

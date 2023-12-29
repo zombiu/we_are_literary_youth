@@ -15,6 +15,7 @@ import com.example.we_youth.utils.observe
 import com.example.we_youth.viewmodel.NetViewModel
 import com.example.we_youth.viewmodel.WanViewModel
 import com.example.we_youth.widget.CustomFlipView
+import com.tencent.matrix.trace.view.FrameDecorator
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -136,6 +137,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             App.read()
         }
 
+        FrameDecorator.getInstance(this).show()
     }
 
 
