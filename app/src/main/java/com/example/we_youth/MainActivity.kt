@@ -1,10 +1,14 @@
 package com.example.we_youth
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.data.LocalDataSource
 import com.example.we_youth.databinding.ActivityMainBinding
@@ -27,10 +31,27 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     val netViewModel by viewModels<NetViewModel>()
     lateinit var binding: ActivityMainBinding
 
+    inner class TimeChangeReceiver: BroadcastReceiver(){
+        override fun onReceive(context: Context, intent: Intent) {
+            when(intent.action) {
+                Intent.ACTION_TIME_TICK-> {
+                    LogUtils.e("-->>onReceive", GsonUtils.toJson(intent.data) + ",过了一分钟了")
+                }
+            }
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //        监听时间变化
+        var intentFilter = IntentFilter()
+        intentFilter.addAction(Intent.ACTION_TIME_TICK)
+        var timeChangeReceiver = TimeChangeReceiver()
+        registerReceiver(timeChangeReceiver, intentFilter)
 
 //        netViewModel.test()
 
