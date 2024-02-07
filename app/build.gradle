@@ -16,7 +16,7 @@ matrix {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     viewBinding {
         enabled = true
@@ -78,14 +78,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc02"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc02"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
     implementation 'androidx.lifecycle:lifecycle-process:2.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1'
 
     implementation "androidx.activity:activity-ktx:1.4.0"
     implementation "androidx.fragment:fragment-ktx:1.4.1"
 
     implementation "androidx.core:core-ktx:1.8.0"
-    implementation "androidx.room:room-ktx:2.4.2"
     implementation "androidx.collection:collection-ktx:1.2.0"
     implementation "androidx.navigation:navigation-runtime-ktx:2.4.2"
     implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
@@ -119,6 +119,12 @@ dependencies {
     implementation group: "com.tencent.matrix", name: "matrix-hooks", version: MATRIX_VERSION, changing: true
 
     implementation "cn.huolala.glog.android:glog-android-static:1.0.0"
+
+    def room_version = "2.6.1"
+//    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
 
 
     println "----版本为 ${isReleaseBuildType()}----"
