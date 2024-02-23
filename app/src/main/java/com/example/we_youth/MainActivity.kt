@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.collection.LruCache
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.we_youth.data.LocalDataSource
@@ -170,6 +171,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         }
 
         FrameDecorator.getInstance(this).show()
+
+//        开发者需要重写 LruCache#sizeOf() 测量缓存单元的内存占用量，否则缓存单元的大小默认视为 1，相当于 maxSize 表示的是最大缓存数量。
+        var lruCache:LruCache<String,String> = LruCache<String,String> (5000)
+        lruCache.put("1","1")
     }
 
 
