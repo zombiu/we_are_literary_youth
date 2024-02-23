@@ -31,10 +31,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     val netViewModel by viewModels<NetViewModel>()
     lateinit var binding: ActivityMainBinding
 
-    inner class TimeChangeReceiver: BroadcastReceiver(){
+    inner class TimeChangeReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            when(intent.action) {
-                Intent.ACTION_TIME_TICK-> {
+            when (intent.action) {
+                Intent.ACTION_TIME_TICK -> {
                     LogUtils.e("-->>onReceive", GsonUtils.toJson(intent.data) + ",过了一分钟了")
                 }
             }
@@ -156,6 +156,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             startActivity(Intent(this, KeyboardActivity::class.java))
             App.write("打开了KeyboardActivity")
             App.read()
+        }
+
+        binding.btnOpen.setOnClickListener {
+            App.write("打开了第三方app")
+            App.read()
+            //第二种方式：通过包名跳转到另一个app的启动页
+            val intent: Intent = packageManager.getLaunchIntentForPackage("xx.xx.xx")!!
+            intent.putExtra("type", "110")
+            intent.putExtra("selector","传递过去的数据")
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         FrameDecorator.getInstance(this).show()
