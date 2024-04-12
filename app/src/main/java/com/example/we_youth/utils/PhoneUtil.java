@@ -8,15 +8,24 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.LruCache;
 
 import androidx.annotation.RequiresPermission;
 
 import com.blankj.utilcode.util.Utils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.UUID;
 
 public final class PhoneUtil {
+
+    private LruCache<String, List<String>> lruCache = new LruCache<String, List<String>>(5000) {
+        @Override
+        protected int sizeOf(String key, List<String> value) {
+            return super.sizeOf(key, value);
+        }
+    };
     private PhoneUtil() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }

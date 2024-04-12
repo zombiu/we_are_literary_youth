@@ -128,6 +128,18 @@ dependencies {
 
 
 
+    // 以下示例修改"2.1.0"为最新版本号
+    implementation 'com.tencent.wcdb:main:2.1.0' // WCDB主模块，包含所有类和接口
+    implementation 'com.tencent.wcdb:annotation:2.1.0' // 包含用于ORM配置的注解
+
+    // 下面两个配置选择配置一个，apt和ksp选用一个，不能同时配置
+//    annotationProcessor 'com.tencent.wcdb:compiler:2.1.0'
+    // 如果要使用Kotlin的ORM则需要配置ksp，使用ksp还需要专门为ksp做一些环境配置，请自行了解
+    ksp 'com.tencent.wcdb:compiler:2.1.0'
+
+    // 如果要兼容使用WCDB 1.0版本或Android SDK SQLite的接口，则配置下面这个依赖
+    implementation 'com.tencent.wcdb:compat:2.1.0'
+
     println "----版本为 ${isReleaseBuildType()}----"
 }
 
